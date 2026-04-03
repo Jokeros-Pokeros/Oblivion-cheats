@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OBLIVION-CHEATS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #00ff9d;
+      --green-dim: #00cc7a;
+      --green-dark: #003d26;
+      --green-faint: #00ff9d18;
+      --bg: #030f08;
+      --bg2: #071a0e;
+      --bg3: #0a2214;
+      --border: #00ff9d33;
+      --border-mid: #00ff9d66;
+      --text: #b0ffd6;
+      --text-dim: #5aad82;
+      --danger: #ff4444;
+      --amber: #ffcc00;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Rajdhani', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.18) 2px,
+        rgba(0,0,0,0.18) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.55) 100%);
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    @keyframes flicker {
+      0%   { opacity: 1; }
+      92%  { opacity: 1; }
+      93%  { opacity: 0.88; }
+      94%  { opacity: 1; }
+      96%  { opacity: 0.92; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes scanline-move {
+      0%   { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { text-shadow: 0 0 4px var(--green), 0 0 10px var(--green-dim); }
+      50%       { text-shadow: 0 0 8px var(--green), 0 0 20px var(--green), 0 0 35px var(--green-dim); }
+    }
+
+    @keyframes typewriter {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    @keyframes card-fadein {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    html { animation: flicker 6s infinite; }
+
+    .scanline-beam {
+      position: fixed;
+      left: 0; right: 0;
+      height: 60px;
+      background: linear-gradient(
+        transparent 0%,
+        rgba(0,255,157,0.04) 40%,
+        rgba(0,255,157,0.07) 50%,
+        rgba(0,255,157,0.04) 60%,
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: 9997;
+      animation: scanline-move 8s linear infinite;
+    }
+
+    .wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-mid);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.5rem;
+      animation: fadein 0.6s ease both;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 1.4s infinite;
+    }
+
+    .terminal-prompt {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    .site-title {
+      font-family: var(--sans);
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      animation: glow-pulse 3s ease-in-out infinite;
+      line-height: 1;
+    }
+
+    .site-subtitle {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-top: 0.4rem;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 0;
+      animation: typewriter 1.8s steps(40) 0.8s forwards;
+    }
+
+    .notice {
+      border: 1px solid var(--amber);
+      background: rgba(255,204,0,0.06);
+      padding: 1rem 1.25rem;
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      animation: fadein 0.6s ease 0.3s both;
+    }
+
+    .notice-label {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .notice p {
+      font-size: 0.82rem;
+      color: #c8b870;
+      line-height: 1.6;
+    }
+
+    .notice a {
+      color: var(--amber);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,204,0,0.4);
+    }
+
+    .notice a:hover { color: #fff; border-color: #fff; }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: fadein 0.6s ease 0.5s both;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      border-radius: 4px;
+      padding: 1.25rem;
+      text-decoration: none;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, background 0.2s, transform 0.18s, box-shadow 0.2s;
+    }
+
+    .card.visible {
+      animation: card-fadein 0.5s ease both;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--green-dim);
+      background: var(--bg3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,255,157,0.08);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-name {
+      font-family: var(--sans);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 6px rgba(0,255,157,0.4);
+    }
+
+    .card-desc {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .card-arrow {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--green-dim);
+      text-transform: uppercase;
+    }
+
+    .mod-section {
+      margin-top: 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      animation: fadein 0.6s ease 1s both;
+    }
+
+    .mod-header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .mod-icon {
+      font-size: 1rem;
+    }
+
+    .mod-title {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      flex: 1;
+    }
+
+    .mod-chevron {
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+    }
+
+    .mod-body {
+      padding: 1.25rem;
+      display: none;
+    }
+
+    .mod-body.open {
+      display: block;
+    }
+
+    .mod-input-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .mod-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      padding: 0.6rem 0.85rem;
+      border-radius: 3px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .mod-input:focus {
+      border-color: var(--green-dim);
+      box-shadow: 0 0 0 2px var(--green-faint);
+    }
+
+    .mod-input::placeholder { color: var(--text-dim); opacity: 0.5; }
+
+    .mod-btn {
+      background: var(--green-dark);
+      border: 1px solid var(--green-dim);
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      padding: 0.6rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+
+    .mod-btn:hover {
+      background: #00331f;
+      box-shadow: 0 0 8px rgba(0,255,157,0.3);
+    }
+
+    .mod-status {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      min-height: 1.2em;
+    }
+
+    .mod-status.ok  { color: var(--green); }
+    .mod-status.err { color: var(--danger); }
+    .mod-status.info{ color: var(--amber); }
+
+    .denied-banner {
+      display: none;
+      background: rgba(255,68,68,0.08);
+      border: 1px solid rgba(255,68,68,0.4);
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--danger);
+      letter-spacing: 0.05em;
+    }
+
+    .denied-banner.show { display: block; }
+
+    .denied-link {
+      display: inline-block;
+      margin-top: 0.5rem;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      text-decoration: none;
+    }
+
+    .denied-link:hover { color: var(--green); }
+
+    footer {
+      margin-top: 3rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      opacity: 0.6;
+      animation: fadein 0.6s ease 1.2s both;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 1em;
+      background: var(--green);
+      vertical-align: text-bottom;
+      animation: blink 0.9s step-end infinite;
+      margin-left: 2px;
+    }
+
+    @media (max-width: 500px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .site-title  { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scanline-beam"></div>
+
+  <div class="wrapper">
+
+    <header>
+      <div class="header-bar">
+        <div class="header-dot"></div>
+        <span class="terminal-prompt">root@oblivion:~$</span>
+      </div>
+      <div class="site-title">OBLIVION-CHEATS<span class="cursor"></span></div>
+      <div class="site-subtitle">// версия 2.6 · сборки актуальны · соединение защищено</div>
+    </header>
+
+    <div class="notice">
+      <div class="notice-label">⚠ Важно знать</div>
+      <p>
+        При ознакомлении с нашей политикой конфиденциальности, вы даёте согласие о снятии
+        ответственности с администрации за полученный вред вам и вашему устройству.
+        <br /><br />
+        <a href="policy.html">→ Наша политика конфиденциальности</a>
+      </p>
+    </div>
+
+    <div class="section-title">Доступные сборки</div>
+    <div class="cards-grid">
+
+      <a class="card" href="standoff2.html">
+        <div class="card-tag">// build_01</div>
+        <div class="card-name">Standoff 2</div>
+        <div class="card-desc">Сборка читов на Standoff 2. Основная информация о канале и доступных услугах.</div>
+        <div class="card-arrow">Перейти →</div>
+      </a>
+
+      <a class="card" href="blackrussia.html">
+        <div class="card-tag">// build_02</div>
+        <div class="card-name">Black Russia</div>
+        <div class="card-desc">Сборка читов на Black Russia. Информация о доступных читах и как их получить.</div>
+        <div class="card-arrow">Перейти →</div>
+      </a>
+
+      <a class="card" href="ssb2.html">
+        <div class="card-tag">// build_03</div>
+        <div class="card-name">SSB2 Cheats</div>
+        <div class="card-desc">Super Striker Boss 2 читы и утилиты. Полный набор инструментов для игроков.</div>
+        <div class="card-arrow">Перейти →</div>
+      </a>
+
+    </div>
+
+    <div class="mod-section">
+      <div class="mod-header" onclick="toggleMod()">
+        <span class="mod-icon">🔐</span>
+        <span class="mod-title">Для модераторов</span>
+        <span class="mod-chevron" id="mod-chev">▼</span>
+      </div>
+      <div class="mod-body" id="mod-body">
+        <div class="mod-input-row">
+          <input class="mod-input" type="password" id="mod-pass" placeholder="Введите пароль..." />
+          <button class="mod-btn" onclick="checkPass()">ВОЙТИ</button>
+        </div>
+        <div style="margin-top: 1rem; padding: 0.75rem; border: 1px solid var(--amber); border-radius: 3px; background: rgba(255,204,0,0.04);">
+          <div style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.5rem; letter-spacing: 0.05em;">🧩 ПОДСКАЗКА:</div>
+          <div style="font-size: 0.82rem; color: #c8b870; line-height: 1.6;">Четыре цифры, которые на клавиатуре расположены по порядку вверх-вниз: 1, 2, 3 и ещё одна...</div>
+        </div>
+        <div class="mod-status" id="mod-status"></div>
+        <div class="denied-banner" id="denied-banner">
+          ДОСТУП ЗАПРЕЩЁН — превышено допустимое количество попыток.
+          <br />
+          <a class="denied-link" href="index.html">← Главная страница</a>
+        </div>
+      </div>
+    </div>
+
+    <footer>OBLIVION-CHEATS © 2026 &nbsp;·&nbsp; ALL SYSTEMS ONLINE</footer>
+
+  </div>
+
+  <script>
+    function toggleMod() {
+      const body = document.getElementById('mod-body');
+      const chev = document.getElementById('mod-chev');
+      body.classList.toggle('open');
+      chev.textContent = body.classList.contains('open') ? '▼' : '▶';
+    }
+
+    let attempts = 0;
+    const MAX_ATTEMPTS = 3;
+
+    function checkPass() {
+      if (attempts >= MAX_ATTEMPTS) return;
+      const val    = document.getElementById('mod-pass').value;
+      const status = document.getElementById('mod-status');
+      const denied = document.getElementById('denied-banner');
+
+      if (!val) {
+        status.textContent = '> ОШИБКА: поле пустое';
+        status.className = 'mod-status err';
+        return;
+      }
+
+      attempts++;
+      const left = MAX_ATTEMPTS - attempts;
+
+      if (val === '1234') {
+        status.textContent = '> ДОСТУП РАЗРЕШЁН ✓ · ПЕРЕХОД...';
+        status.className   = 'mod-status ok';
+        setTimeout(() => {
+          window.location.href = 'https://share.google.com/TYvMDYWGed6Omrnx4';
+        }, 1000);
+      } else if (left > 0) {
+        status.textContent = `> НЕВЕРНЫЙ ПАРОЛЬ. Попыток осталось: ${left}`;
+        status.className   = 'mod-status err';
+        document.getElementById('mod-pass').value = '';
+      } else {
+        status.textContent = '';
+        denied.classList.add('show');
+        document.getElementById('mod-pass').disabled = true;
+        document.querySelector('.mod-btn').disabled  = true;
+      }
+    }
+
+    document.getElementById('mod-pass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') checkPass();
+    });
+  </script>
+</body>
+</html>
