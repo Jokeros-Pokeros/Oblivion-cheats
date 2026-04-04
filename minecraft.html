@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minecraft Mods // OBLIVION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #00ff9d;
+      --green-dim: #00cc7a;
+      --green-dark: #003d26;
+      --green-faint: #00ff9d18;
+      --bg: #030f08;
+      --bg2: #071a0e;
+      --bg3: #0a2214;
+      --border: #00ff9d33;
+      --border-mid: #00ff9d66;
+      --text: #b0ffd6;
+      --text-dim: #5aad82;
+      --danger: #ff4444;
+      --amber: #ffcc00;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Rajdhani', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.18) 2px,
+        rgba(0,0,0,0.18) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.55) 100%);
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    @keyframes flicker {
+      0%   { opacity: 1; }
+      92%  { opacity: 1; }
+      93%  { opacity: 0.88; }
+      94%  { opacity: 1; }
+      96%  { opacity: 0.92; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes scanline-move {
+      0%   { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { text-shadow: 0 0 4px var(--green), 0 0 10px var(--green-dim); }
+      50%       { text-shadow: 0 0 8px var(--green), 0 0 20px var(--green), 0 0 35px var(--green-dim); }
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    html { animation: flicker 6s infinite; }
+
+    .scanline-beam {
+      position: fixed;
+      left: 0; right: 0;
+      height: 60px;
+      background: linear-gradient(
+        transparent 0%,
+        rgba(0,255,157,0.04) 40%,
+        rgba(0,255,157,0.07) 50%,
+        rgba(0,255,157,0.04) 60%,
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: 9997;
+      animation: scanline-move 8s linear infinite;
+    }
+
+    .wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--green); }
+
+    header {
+      border-bottom: 1px solid var(--border-mid);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.5rem;
+      animation: fadein 0.6s ease both;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 1.4s infinite;
+    }
+
+    .terminal-prompt {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    .site-title {
+      font-family: var(--sans);
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: glow-pulse 3s ease-in-out infinite;
+      line-height: 1;
+    }
+
+    .site-subtitle {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-top: 0.4rem;
+    }
+
+    .section {
+      margin-bottom: 2.5rem;
+      animation: fadein 0.6s ease both;
+    }
+
+    .section:nth-child(2) { animation-delay: 0.2s; }
+    .section:nth-child(3) { animation-delay: 0.4s; }
+
+    .section-title {
+      font-family: var(--sans);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .content-box {
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      border-radius: 4px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .text-block {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .text-block:last-child { margin-bottom: 0; }
+
+    .text-block strong {
+      color: var(--green);
+      font-weight: normal;
+    }
+
+    .notice {
+      border: 1px solid var(--amber);
+      background: rgba(255,204,0,0.06);
+      padding: 1rem 1.25rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+
+    .notice-label {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .notice p {
+      font-size: 0.82rem;
+      color: #c8b870;
+      line-height: 1.6;
+    }
+
+    .notice a {
+      color: var(--amber);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,204,0,0.4);
+    }
+
+    .notice a:hover { color: #fff; border-color: #fff; }
+
+    .version-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .version-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      border: 1px solid var(--green);
+      color: var(--green);
+      padding: 1.25rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: all 0.3s;
+      background: transparent;
+      cursor: pointer;
+      animation: slideUp 0.5s ease both;
+    }
+
+    .version-btn:nth-child(1) { animation-delay: 0.3s; }
+    .version-btn:nth-child(2) { animation-delay: 0.4s; }
+
+    .version-btn:hover {
+      background: var(--green-dark);
+      box-shadow: 0 0 20px rgba(0,255,157,0.25);
+      transform: translateY(-2px);
+    }
+
+    .version-icon {
+      font-size: 1.5rem;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 2.5rem 0;
+      position: relative;
+    }
+
+    .divider::after {
+      content: '//';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg);
+      padding: 0 1rem;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      opacity: 0.6;
+      text-align: center;
+    }
+
+    @media (max-width: 500px) {
+      .site-title { font-size: 1.4rem; }
+      .version-buttons { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scanline-beam"></div>
+
+  <div class="wrapper">
+
+    <a href="index.html" class="nav-back">← Вернуться на главную</a>
+
+    <header>
+      <div class="header-bar">
+        <div class="header-dot"></div>
+        <span class="terminal-prompt">root@oblivion:/minecraft$</span>
+      </div>
+      <div class="site-title">MINECRAFT MODS</div>
+      <div class="site-subtitle">// выберите версию игры</div>
+    </header>
+
+    <div class="section">
+      <div class="notice">
+        <div class="notice-label">⚠ Внимание</div>
+        <p>
+          Некоторые моды и утилиты могут не работать с определёнными версиями игры или конфликтовать с другими модами. 
+          Если вы столкнулись с проблемой, пожалуйста <strong>сообщите об этом в нашем боте</strong> — мы быстро вам поможем!
+          <br /><br />
+          <a href="policy.html">→ Наша политика конфиденциальности</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Выберите версию Minecraft:</div>
+      <div class="content-box">
+        <div class="version-buttons">
+          <a href="minecraft-bedrock.html" class="version-btn">
+            <span class="version-icon">📱</span>
+            <span>Bedrock Edition</span>
+          </a>
+          <a href="minecraft-java.html" class="version-btn">
+            <span class="version-icon">🖥️</span>
+            <span>Java Edition</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <footer>Minecraft Mods © 2026 &nbsp;·&nbsp; OBLIVION SYSTEMS</footer>
+
+  </div>
+
+</body>
+</html>
